@@ -92,7 +92,9 @@
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-
+      
+      // do we need to count? We can maybe use .reduce()
+      
       var conflicts = 0;
       for ( var i = 0; i < this.rows().length; i++ ) {
         if ( this.hasRowConflictAt(i) ) {
@@ -138,12 +140,27 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var x = majorDiagonalColumnIndexAtFirstRow;
+      var count = 0;
+      for ( var i = 0; i < this.rows().length; i++ ) {
+        if ( this._isInBounds(i, x + i) ) {
+          if ( this.get(i)[x + 1] === 1 ) {
+            count++;
+          }
+        }
+      }
+      return count >= 2;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      var conflicts = 0;
+      for ( var i = 0; i < this.rows().length; i++ ) {
+        if ( this.hasMajorDiagonalConflictAt(i) ) {
+          conflicts++;
+        }
+      }
+      return conflicts >= 1;
     },
 
 
