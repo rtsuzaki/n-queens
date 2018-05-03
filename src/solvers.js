@@ -26,7 +26,7 @@ window.findNRooksSolution = function(n) {
   for ( var i = 0; i < n; i++ ) {
     for ( var j = 0; j < n; j++ ) {
       board.togglePiece(i, j);
-      if( board.hasAnyRooksConflicts() ) {
+      if ( board.hasAnyRooksConflicts() ) {
         board.togglePiece(i, j);
       }
     }
