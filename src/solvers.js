@@ -42,6 +42,7 @@ window.countNRooksSolutions = function(n) {
       var board = new Board({n: n});
       board.togglePiece(r, c);
       console.log(r, c);
+
       for ( var i = 0; i < n; i++ ) {
         for ( var j = 0; j < n; j++ ) {
           if ( board.get(i)[j] === 0 ) {
@@ -63,14 +64,49 @@ window.countNRooksSolutions = function(n) {
         var strBoard = JSON.stringify( board.rows() );
         if ( !_.contains(solvedBoards, strBoard) ) {
           solvedBoards.push(strBoard);
+          console.log(strBoard);
           solutionCount++;
         }
       }
-      
     }
   }
 
-  console.log(solvedBoards);
+  for ( var r = 0; r < n; r++ ) {
+    for ( var c = 0; c < n; c++ ) {
+
+      var board = new Board({n: n});
+      board.togglePiece(r, c);
+      console.log(r, c);
+
+      for ( var i = n - 1; i > 0; i-- ) {
+        for ( var j = 0; j < n; j++ ) {
+          if ( board.get(i)[j] === 0 ) {
+            board.togglePiece(i, j);
+          }
+          if ( board.hasAnyRooksConflicts() ) {
+            board.togglePiece(i, j);
+          }
+        }
+      }  
+
+      var numPieces = _.reduce(board.rows(), function(memo, row) {
+        return memo + _.reduce(row, function(memo, col) {
+          return memo + col;
+        }, 0);
+      }, 0);
+
+      if ( numPieces === n ) {
+        var strBoard = JSON.stringify( board.rows() );
+        if ( !_.contains(solvedBoards, strBoard) ) {
+          solvedBoards.push(strBoard);
+          console.log(strBoard);
+          solutionCount++;
+        }
+      }
+    }
+  }
+
+  // console.log(solvedBoards);
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
 };
