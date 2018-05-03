@@ -92,9 +92,6 @@
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      
-      // do we need to count? We can maybe use .reduce()
-      
       var conflicts = 0;
       for ( var i = 0; i < this.rows().length; i++ ) {
         if ( this.hasRowConflictAt(i) ) {
@@ -144,7 +141,7 @@
       var count = 0;
       for ( var i = 0; i < this.rows().length; i++ ) {
         if ( this._isInBounds(i, x + i) ) {
-          if ( this.get(i)[x + 1] === 1 ) {
+          if ( this.get(i)[x + i] === 1 ) {
             count++;
           }
         }
@@ -155,7 +152,7 @@
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
       var conflicts = 0;
-      for ( var i = 0; i < this.rows().length; i++ ) {
+      for ( var i = -this.rows().length; i < this.rows().length; i++ ) {
         if ( this.hasMajorDiagonalConflictAt(i) ) {
           conflicts++;
         }
@@ -170,12 +167,27 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var x = minorDiagonalColumnIndexAtFirstRow;
+      var count = 0;
+      for ( var i = 0; i < this.rows().length; i++ ) {
+        if ( this._isInBounds(i, x - i) ) {
+          if ( this.get(i)[x - i] === 1 ) {
+            count++;
+          }
+        }
+      }
+      return count >= 2;
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      var conflicts = 0;
+      for ( var i = this.rows().length * 2; i > 0; i-- ) {
+        if ( this.hasMinorDiagonalConflictAt(i) ) {
+          conflicts++;
+        }
+      }
+      return conflicts >= 1;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
