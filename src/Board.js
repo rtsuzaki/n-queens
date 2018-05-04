@@ -74,6 +74,16 @@
     =                 TODO: fill in these Helper Functions                    =
     =========================================================================*/
 
+    tally: function() {
+
+      return numPieces = _.reduce(this.rows(), function(memo, row) {
+        return memo + _.reduce(row, function(memo, col) {
+          return memo + col;
+        }, 0);
+      }, 0);
+          
+    },
+
     // ROWS - run from left to right
     // --------------------------------------------------------------
     //
